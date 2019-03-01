@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Psychic Game</title>
+  <link rel= "stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+
+<!--
+2. You're going to make a game just like the one in the video. Essentially, the app randomly picks a letter, and the user has to guess which letter the app chose. Put the following text on your page:
+
+3. Guess what letter I'm thinking of
+
+4. Wins: (# of times the user has guessed the letter correctly)
+
+5. Losses: (# of times the user has failed to guess the letter correctly after exhausting all guesses)
+
+6. Guesses Left: (# of guesses left. This will update)
+
+7. Your Guesses So Far: (the specific letters that the user typed. Display these until the user either wins or loses.)
+
+8. When the player wins, increase the Wins counter and start the game over again (without refreshing the page).
+
+9. When the player loses, increase the Losses counter and restart the game without a page refresh (just like when the user wins).
+-->
+
+  <div id="game">
+    <p id="directions-text">Guess what letter I'm thinking of...</p>
+    <p id="previouschoices-text"></p>
+    <p id="computerchoice-text"></p>
+    <p id="userchoice-text"></p>
+    <p id="guesses-text"></p>
+    <p id="wins-text"></p>
+    <p id="losses-text"></p>
+  </div>
+
+  <script type="text/javascript">
+
+    // Creates an array that lists out all of the possible options (a, b, c...).
+    var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+    // Create variables to hold the number of wins, losses, remaining guesses for the user as well as an array to hold the letters they've already tried.
+    var wins = 0;
+    var losses = 0;
+    var guesses = 9;
+    let lettersGuessed = [];
+
+    // Create variables that hold references to the places in the HTML where we want to display things.
+    var directionsText = document.getElementById("directions-text");
+    var userChoiceText = document.getElementById("userchoice-text");
+    var previousChoicesText = document.getElementById("previouschoices-text");
+    var computerChoiceText = document.getElementById("computerchoice-text");
+    var winsText = document.getElementById("wins-text");
+    var lossesText = document.getElementById("losses-text");
+    var guessesText = document.getElementById("guesses-text");
+
+    // This function is run whenever the user presses a key.
+    document.onkeyup = function(event) {
+
+      // Determines which key was pressed. Also pushes the user's new guess into the array holding their previous guesses.
+      var userGuess = event.key;
+      lettersGuessed.push(userGuess);
+
+      // Randomly chooses a letter from the options array. This is the Computer's guess.
+      var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+      // Only run the following code block if the user presses one of the 26 letter keys.
+      if ((userGuess === "a") || (userGuess === "b") || (userGuess === "c") || (userGuess === "d") || (userGuess === "e") || (userGuess === "f") || (userGuess === "g") || (userGuess === "h") || (userGuess === "i") || (userGuess === "j") || (userGuess === "k") || (userGuess === "l") || (userGuess === "m") || (userGuess === "n") || (userGuess === "o") || (userGuess === "p") || (userGuess === "q") || (userGuess === "r") || (userGuess === "s") || (userGuess === "t") || (userGuess === "u") || (userGuess === "v") || (userGuess === "w") || (userGuess === "x") || (userGuess === "y") || (userGuess === "z")) {
+
+        // If we choose the same letter as the computer, we win. The game resets... with a little banter from the computer. ;)
+        if ((userGuess === computerGuess)) {
+          wins++;
+          guesses = 9;
+          lettersGuessed.length = 0;
+          confirm("Jammy git! You actually won! Maybe we've underestimated you. ...............whatever. This round Sally's bringing her A game! She's already sussed out all of your guesses. You really think you can beat Psychic Sally TWICE?!");
+          if (true) {
+            alert("Think again, pal.");
+          } else {
+            alert("Quitting while you're ahead, eh? A wise choice... but so so lame.")
+          }
+        }
+
+        // Otherwise we lose a life. :/
+        else if ((userGuess !== computerGuess && guesses > 1)) {
+          guesses--;
+        }
+
+        // Or, finally, once we've exhausted all of our remaining lives, we lose. :(
+
+        else {
+            losses++;
+            guesses = 9;
+            lettersGuessed.length = 0;
+            confirm("Ha! You lose! Sure you want to keep playing?");
+            if (true) {
+              alert("Good luck. You'll need it!");
+            } else {
+              alert("Really? Walking away already? Boooooooooring.");
+            }
+        }
+        
+        // Hide the directions text which should only appear when the page is first opened.
+        directionsText.textContent = "";
+        
+        // Alert the userGuess and computerGuess. This is entirely optional and not necessary.
+        //alert("Your pathetic choice: " + userGuess);
+        //alert("Psychic Sally's choice: " + computerGuess);
+
+        // Display the user and computer guesses as well as the wins/losses of each player.
+        previousChoicesText.textContent = "Incorrect guesses: " + lettersGuessed + " ";
+        computerChoiceText.textContent = "Psychic Sally chose: " + computerGuess;
+        userChoiceText.textContent = "You chose... (poorly): " + userGuess;
+        winsText.textContent = "Wins: " + wins;
+        lossesText.textContent = "Losses: " + losses;
+        guessesText.textContent = "Guesses remaining: " + guesses;
+      }
+    };
+  </script>
+
+</body>
+
+</html>
